@@ -101,10 +101,7 @@ tones = ["All"] + ["Happy", "Suprise", "Anger", "Suspenseful" , "Sad"]
 custom_theme = gr.themes.Soft().set(
     # Correct way to set the primary/accent color using a known variable
     button_primary_background_fill="#50065f", 
-    button_primary_border_color="#ca06ca",
-    
-    border_radius_xl="16px",
-    text_lg="1.2rem", 
+    button_primary_border_color="#ca06ca", 
 )
 
 with gr.Blocks(theme=custom_theme) as dashboard:
