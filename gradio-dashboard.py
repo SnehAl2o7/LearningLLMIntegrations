@@ -98,19 +98,23 @@ tones = ["All"] + ["Happy", "Suprise", "Anger", "Suspenseful" , "Sad"]
 
 #the changing of theme
 
-custom_theme = gr.themes.Glass().set(
-    primary_700="#7c0786", 
-    border_radius_xl="10px", 
+custom_theme = gr.themes.Soft().set(
+    # Correct way to set the primary/accent color using a known variable
+    button_primary_background_fill="#50065f", 
+    button_primary_border_color="#ca06ca",
+    
+    border_radius_xl="16px",
+    text_lg="1.2rem", 
 )
 
-with gr.Blocks(theme = custom_theme) as dashboard:
-    gr.Markdown("# Semantic Book Recommender")
+with gr.Blocks(theme=custom_theme) as dashboard:
+    gr.Markdown("# Semantic Book Recommender 📚✨")
 
     with gr.Row():
         gr.Column(scale=1) 
         
         with gr.Column(scale=4):
-            gr.Markdown("## 📖 Enter Your Query and Preferences")
+            gr.Markdown("## Query and Filtering Preferences")
             
             user_query = gr.Textbox(label="Please enter a description of a book:",
                                 placeholder= "e.g., A story about a detective in 1920s London.")
@@ -121,12 +125,12 @@ with gr.Blocks(theme = custom_theme) as dashboard:
             
             submit_button = gr.Button("🔍 Find Recommendations", variant="primary")
             
-        gr.Column(scale=1)
+        gr.Column(scale=1) 
         
     gr.Markdown("---") 
-    gr.Markdown("## ✨ Personalized Book Recommendations")
+    gr.Markdown("## Your Results")
     
-    output = gr.Gallery(label="Recommmending books", columns=8, rows=2, object_fit="contain")
+    output = gr.Gallery(label="Recommending books", columns=8, rows=2, object_fit="contain")
 
     submit_button.click(fn=recommend_books,
                         inputs = [user_query, tone_dropdown, category_dropdown],
