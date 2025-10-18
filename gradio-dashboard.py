@@ -19,7 +19,7 @@ books["large_thumbnail"] = np.where(
 )
 
 raw_documents = TextLoader("tagged_description.txt").load()
-text_splitter = CharacterTextSplitter(separator="\n", chunk_size=100, chunk_overlap=10)
+text_splitter = CharacterTextSplitter(separator="\n", chunk_size=2000, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
 db_books = Chroma.from_documents(documents, HuggingFaceEmbeddings())
 
@@ -32,7 +32,7 @@ def retrieve_semantic(
 ) -> pd.DataFrame:
     
     recs = db_books.similarity_search(query, k=initial_top_k)
-    books_list = [int(rec.page_content.string('"').split()[0]) for rec in recs]
+    books_list = [int(rec.page_content.strip().split()[0]) for rec in recs]
     book_recs = books[books["isbn13"].isin(books_list)].head(final_top_k)
 
     if category != "All":
@@ -45,7 +45,7 @@ def retrieve_semantic(
     if tone == "Happy":
         book_recs.sort_values(by="joy", ascending=False, inplace=True)
     
-    elif tone == "Suprising":
+    elif tone == "Suprise":
         book_recs.sort_values(by="suprise", ascending=False, inplace=True)
 
     elif tone == "Anger":
@@ -58,7 +58,7 @@ def retrieve_semantic(
         book_recs.sort_values(by="sadness", ascending=False, inplace=True)
     
 
-    return book_recs
+    return book_recs.head(final_top_k)
 
 
 
@@ -94,18 +94,18 @@ def recommend_books(
 
 
 categories = ["All"] + sorted(books["simple_categories"].unique())
-tones = ["All"] + ["Happy", "Suprising", "Angry", "Suspenseful" , "Sad"]
+tones = ["All"] + ["Happy", "Suprise", "Anger", "Suspenseful" , "Sad"]
 
 
-with gr.Blocks(theme = gr.themes.Glass()) as dashboard:
+with gr.Blocks(theme = gr.themes.Soft()) as dashboard:
     gr.Markdown("# Semantic Book Recommender")
 
     with gr.Row():
         user_query = gr.Textbox(label="Please enter a description of a book: ",
                                 placeholder= "e.g., A story about forgiveness")
         
-        category_dropdown = gr.Dropdown(choices=tones, label="Select an emotional tone:", value="All")
-        tone_dropdown = gr.Dropdown(choices=tones, label= "Select a category:", value="All")
+        tone_dropdown = gr.Dropdown(choices=tones, label="Select an emotional tone:", value="All")
+        category_dropdown = gr.Dropdown(choices=categories, label= "Select a category:", value="All")
         submit_button = gr.Button("Find Recommendations")
     
     gr.Markdown("## Recommendation")
