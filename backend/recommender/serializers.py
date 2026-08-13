@@ -92,7 +92,7 @@ class FavoriteBookSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = FavoriteBook
-        fields = ('id', 'isbn13', 'created_at')
+        fields = ('id', 'isbn13', 'title', 'authors', 'thumbnail', 'created_at')
         read_only_fields = ('id', 'created_at')
 
 
@@ -105,6 +105,24 @@ class FavoriteAddSerializer(serializers.Serializer):
         max_length=13,
         min_length=13,
         help_text='The 13-digit ISBN of the book to favorite.',
+    )
+    title = serializers.CharField(
+        required=False,
+        default='',
+        max_length=500,
+        allow_blank=True,
+    )
+    authors = serializers.CharField(
+        required=False,
+        default='',
+        max_length=500,
+        allow_blank=True,
+    )
+    thumbnail = serializers.CharField(
+        required=False,
+        default='',
+        max_length=1000,
+        allow_blank=True,
     )
 
     def validate_isbn13(self, value):

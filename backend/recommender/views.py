@@ -137,6 +137,9 @@ class FavoriteAddView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         isbn13 = serializer.validated_data['isbn13']
+        title = serializer.validated_data.get('title', '')
+        authors = serializer.validated_data.get('authors', '')
+        thumbnail = serializer.validated_data.get('thumbnail', '')
 
         # Check if already favorited
         if FavoriteBook.objects.filter(user=request.user, isbn13=isbn13).exists():
@@ -149,6 +152,9 @@ class FavoriteAddView(APIView):
             favorite = FavoriteBook.objects.create(
                 user=request.user,
                 isbn13=isbn13,
+                title=title,
+                authors=authors,
+                thumbnail=thumbnail,
             )
         except IntegrityError:
             return Response(

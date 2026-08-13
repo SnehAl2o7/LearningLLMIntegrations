@@ -14,6 +14,9 @@ class FavoriteBook(models.Model):
         related_name='favorite_books',
     )
     isbn13 = models.CharField(max_length=13)
+    title = models.CharField(max_length=500, blank=True, default='')
+    authors = models.CharField(max_length=500, blank=True, default='')
+    thumbnail = models.URLField(max_length=1000, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
