@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function BookCard({ book, onClick }) {
+export default function BookCard({ book, onClick, className = '' }) {
   const [imgError, setImgError] = useState(false);
 
   const coverUrl =
@@ -13,7 +13,7 @@ export default function BookCard({ book, onClick }) {
   return (
     <div
       onClick={() => onClick(book)}
-      className="book-card cursor-pointer group rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06] hover:border-purple-500/30"
+      className={`book-card cursor-pointer group rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06] hover:border-purple-500/30 ${className}`}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick(book)}
@@ -25,7 +25,7 @@ export default function BookCard({ book, onClick }) {
           <img
             src={coverUrl}
             alt={book.title || 'Book cover'}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             onError={() => setImgError(true)}
             loading="lazy"
           />
@@ -55,23 +55,50 @@ export default function BookCard({ book, onClick }) {
 
         {/* Rating badge */}
         {book.average_rating && (
-          <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-sm text-xs">
-            <span className="text-amber-400">★</span>
-            <span className="text-white/90">
+          <div className="absolute top-2 right-2 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-sm text-xs border border-white/10">
+            <span className="text-amber-400 star-filled">★</span>
+            <span className="text-white/90 font-medium">
               {Number(book.average_rating).toFixed(1)}
             </span>
+          </div>
+        )}
+
+        {/* Category badge */}
+        {book.simple_categories && (
+          <div className="absolute top-2 left-2 badge badge-purple">
+            {book.simple_categories}
           </div>
         )}
       </div>
 
       {/* Title */}
-      <div className="p-3">
-        <h3 className="text-sm font-medium text-gray-200 line-clamp-2 leading-snug">
+      <div className="p-4">
+        <h3 className="text-sm font-medium text-gray-100 line-clamp-2 leading-snug group-hover:text-purple-300 transition-colors duration-200">
           {book.title || 'Untitled'}
         </h3>
-        <p className="text-xs text-gray-500 mt-1 truncate">
+        <p className="text-xs text-gray-500 mt-1.5 truncate group-hover:text-gray-400 transition-colors duration-200">
           {book.authors || 'Unknown Author'}
         </p>
+        
+        {/* Meta info */}
+        <div className="flex items-center gap-2 mt-2.5 text-xs text-gray-500">
+          {book.published_year && (
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {Math.round(book.published_year)}
+            </span>
+          )}
+          {book.num_pages && (
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              {Math.round(book.num_pages)}p
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

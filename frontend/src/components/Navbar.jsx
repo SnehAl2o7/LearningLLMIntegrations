@@ -9,26 +9,33 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">📚</span>
-            <h1 className="text-xl font-bold gradient-text tracking-tight">
+          <NavLink to="/discover" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full animate-ping opacity-75" />
+            </div>
+            <h1 className="text-xl font-bold gradient-text tracking-tight group-hover:scale-105 transition-transform duration-300">
               BookLens
             </h1>
-          </div>
+          </NavLink>
 
           {/* Navigation Links */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <NavLink
               to="/discover"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                `relative px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive
-                    ? 'bg-purple-600/80 text-white shadow-lg shadow-purple-500/20'
+                    ? 'bg-gradient-to-r from-purple-600/90 to-pink-600/90 text-white shadow-lg shadow-purple-500/25'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`
               }
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 relative z-10">
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -44,19 +51,22 @@ export default function Navbar() {
                 </svg>
                 Discover
               </span>
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl blur" />
+              )}
             </NavLink>
 
             <NavLink
               to="/favorites"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                `relative px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive
-                    ? 'bg-purple-600/80 text-white shadow-lg shadow-purple-500/20'
+                    ? 'bg-gradient-to-r from-purple-600/90 to-pink-600/90 text-white shadow-lg shadow-purple-500/25'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`
               }
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 relative z-10">
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -72,24 +82,28 @@ export default function Navbar() {
                 </svg>
                 Favorites
               </span>
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl blur" />
+              )}
             </NavLink>
           </div>
 
           {/* User Menu */}
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
-              <div className="w-6 h-6 rounded-full bg-purple-600/40 flex items-center justify-center text-xs font-bold text-purple-300">
+            <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/3 border border-white/10 hover:border-purple-500/30 transition-all duration-300 group">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xs font-bold text-white group-hover:scale-110 transition-transform duration-300">
                 {user?.username?.[0]?.toUpperCase() || 'U'}
               </div>
-              <span className="text-sm text-gray-300">{user?.username}</span>
+              <span className="text-sm font-medium text-gray-200">{user?.username}</span>
+              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" title="Online" />
             </div>
             <button
               onClick={logout}
-              className="px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+              className="relative p-2.5 rounded-xl text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 group"
               title="Logout"
             >
               <svg
-                className="w-5 h-5"
+                className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -101,6 +115,9 @@ export default function Navbar() {
                   d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
                 />
               </svg>
+              <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-gray-500 bg-gray-900/90 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                Logout
+              </span>
             </button>
           </div>
         </div>
